@@ -31,11 +31,20 @@ for(let i=1; i<=5; i++) {
     keyBoardContainer.appendChild(line);
 }
 
+let d1 = document.createElement('div');
+container.classList.add('system');
+d1.innerHTML='Клавиатура создана в операционной системе MacOs';
+
+let d2 = document.createElement('div');
+container.classList.add('lang');
+d2.innerHTML='Для переключения языка комбинация: левыe ctrl + alt';
 
 
 container.appendChild(h1);
 container.appendChild(textarea);
 container.appendChild(keyBoardContainer);
+container.appendChild(d1);
+container.appendChild(d2);
 
 document.body.appendChild(container);
 
@@ -55,7 +64,7 @@ function keyDownHandle(e){
     }
     keyActionHandle(key);
 
-    console.log(Key.caps);
+    //console.log(Key.caps);
 }
 
 function keyUpHandle(e){
@@ -111,7 +120,7 @@ function keyActionHandle(key){
     if(!key) return;
     
     if(key.isCommand()) {
-        console.log('action2');
+        //console.log('action2');
         switch(key.code){
             case 'Backspace':
                 deleteChar();
@@ -127,12 +136,25 @@ function keyActionHandle(key){
                 shiftPress();
                 keyboardCapsChange();
                 break;
+
+            case 'ControlLeft':
+            case 'AltLeft':
+                if(keysActive.has('ControlLeft') && keysActive.has('AltLeft')) {
+                    langToggle();
+                    keyboardCapsChange();
+                }
+                break;
         }
     }
     else {
-        console.log('key');
+        //console.log('key');
         insertKey(key);
     }
+}
+
+function langToggle(){
+    if(Key.lang == 'en') Key.lang = 'ru';
+    else Key.lang = 'en';
 }
 
 function keyUpAction(key){
