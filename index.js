@@ -18,7 +18,6 @@ keyBoardContainer.classList.add('keyboard-container');
 for(let i=1; i<=5; i++) {
     let line = document.createElement('div');
     line.classList.add('line');
-    //console.log(Key.getKeyboardLineKeys(i));
     Key.getKeyboardLineKeys(i).forEach((key)=>{
         let keyDiv = document.createElement('div');
         keyDiv.classList.add('key');
@@ -88,7 +87,6 @@ function keyUpHandle(e){
 
     keyUpAction(key);
 
-    //e.preventDefault();
 }
 
 function mouseDownHandle(e){
@@ -119,7 +117,7 @@ function mouseUpHandle(e){
 function keyboardCapsChange(){
     keysHtml.forEach((el)=>{
         let key = Key.getKeyByCode(el.dataset.code);
-        //console.log(key.isCommand);
+
         if(!key.isCommand() && key.code !== 'Enter' && key.code !== 'Tab'){
             el.innerText = key.getValue();
         }
@@ -130,7 +128,7 @@ function keyActionHandle(key){
     if(!key) return;
     
     if(key.isCommand()) {
-        //console.log('action2');
+        
         switch(key.code){
             case 'Backspace':
                 deleteChar();
@@ -157,7 +155,7 @@ function keyActionHandle(key){
         }
     }
     else {
-        //console.log('key');
+        
         insertKey(key);
     }
 }
@@ -224,12 +222,12 @@ function deleteChar(){
 
 function addActive(key){
     let target = keysHtml.find((el)=>el.dataset.code==key.code);
-    //console.log(target);
+    
     target.classList.add('active');
 }
 
 function removeActive(key){
     let target = keysHtml.find((el)=>el.dataset.code==key.code);
-    //console.log(target);
+    
     target.classList.remove('active');
 }
