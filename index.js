@@ -55,12 +55,13 @@ function keyDownHandle(e){
 }
 
 function keyUpHandle(e){
-    e.preventDefault();
+    console.log(e.code);
     let key = Key.getKeyByCode(e.code);
 
     if(key) {
         setTimeout(removeActive, 200, key);
     }
+    e.preventDefault();
 }
 
 function mouseDownHandle(e){
@@ -73,17 +74,17 @@ function mouseDownHandle(e){
     }
 }
 
-function mouseUp(e){
+function mouseUpHandle(e){
     let code = e.target.dataset.code;
     if(code){
         let key = Key.getKeyByCode(code);
-        removeActive(key);
+        setTimeout(removeActive, 200, key);
     }
 }
 
 function insertKey(key){
-    //console.log(key, textarea.value);
-    //console.log('string:'+textarea.value+key.value);
+    if(key.isCommand()) return;
+        
     let newString=String(textarea.value+key.getValue());
     textarea.value = newString;
 }

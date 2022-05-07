@@ -66,9 +66,10 @@ export class Key{
         ['AltRight', 'Option'], 
         ['ArrowLeft', '◄'], 
         ['ArrowDown', '▼'], 
-        ['ArrowRight', '►'], 
-        
+        ['ArrowRight', '►'],        
     ]
+
+    static commandKeys = ['Backspace', 'CapsLock', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
 
     static getKeyboardLineKeys(line=1){
         let result =[];
@@ -117,7 +118,12 @@ export class Key{
     getValue() {
         if (this.value=='Tab') return '\t';
         if (this.value=='Enter') return '\n';
+        if (this.value=='Space') return ' ';
         else return this.value;
+    }
+
+    isCommand(){
+        return Key.commandKeys.includes(this.code);
     }
 
     constructor(keyArr){
