@@ -1,7 +1,7 @@
 .container {
     margin: 0 auto;
-    width: 700px;  
-    background-color: yellow;
+    width: 665px;  
+    background-color: white;
   }
   
   h1{
@@ -9,14 +9,16 @@
   }
   
   textarea{
-      width: 100%;
+      width: 99%;
       height: 200px;
+      resize: none;
   }
 
   .line{
       display: flex;
       flex-flow: row nowrap;
       gap: 5px;
+      margin-bottom: 5px;
   }
 
   .key{
@@ -30,15 +32,56 @@
       border-radius: 2px;
       border-radius: 10px;
 
-      transition: all 0.3s;
+      transition: all 0.2s;
 
       cursor: pointer;
   }
 
   .key.active{
-      background-color: green;
-      transition: all 0.4s;
-      border-radius: 10px;
+      background-color: rgb(37, 111, 248);
+      transition: all 0.2s;
+      border-radius: 15px;
   }
 
+  .keyboard-container{
+      background-color: #adadad;
+    & .line:nth-child(1) {
+        & .key:last-child{
+            width: 80px;
+        }
+    }
+        & .line:nth-child(2) {
+            & .key:first-child{
+                width: 65px;
+            }
+            & .key:last-child{
+                width: 55px;
+            }
+        }
+        & .line:nth-child(3) {
+            & .key:last-child{
+                width: 86px;
+            }
+        }
+        & .line:nth-child(4) {
+            & .key:first-child{
+                width: 100px;
+            }
+            & .key:last-child{
+                width: 65px;
+            }
+        }
+        & .line:nth-child(5) {
+            & .key:nth-child(4){
+                width: 178px;
+            }
 
+        }
+  }
+
+.system,
+.lang {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+}

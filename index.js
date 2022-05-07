@@ -1,7 +1,6 @@
 import {Key} from "./classes/key.js";
 
 let keysHtml = [];
-
 let keysActive = new Set();
 
 
@@ -32,11 +31,11 @@ for(let i=1; i<=5; i++) {
 }
 
 let d1 = document.createElement('div');
-container.classList.add('system');
+d1.classList.add('system');
 d1.innerHTML='Клавиатура создана в операционной системе MacOs';
 
 let d2 = document.createElement('div');
-container.classList.add('lang');
+d2.classList.add('lang');
 d2.innerHTML='Для переключения языка комбинация: левыe ctrl + alt';
 
 
@@ -54,17 +53,28 @@ document.addEventListener('keyup', keyUpHandle);
 document.addEventListener('mousedown', mouseDownHandle);
 document.addEventListener('mouseup', mouseUpHandle);
 
+
+if(localStorage.getItem('lang') && localStorage.getItem('lang') != '') {
+    Key.lang=localStorage.getItem('lang');
+    keyboardCapsChange();
+}
+else{
+    localStorage.setItem('lang', Key.lang);
+}
+
+
+
 function keyDownHandle(e){
-    e.preventDefault();
     keysActive.add(e.code);
 
     let key = Key.getKeyByCode(e.code);
     if(key && key.code != 'CapsLock') {
+        e.preventDefault();
         addActive(key);
     }
     keyActionHandle(key);
 
-    //console.log(Key.caps);
+    textarea.focus();
 }
 
 function keyUpHandle(e){
@@ -73,12 +83,12 @@ function keyUpHandle(e){
     let key = Key.getKeyByCode(e.code);
 
     if(key && key.code != 'CapsLock') {
-        setTimeout(removeActive, 200, key);
+        setTimeout(removeActive, 150, key);
     }
 
     keyUpAction(key);
 
-    e.preventDefault();
+    //e.preventDefault();
 }
 
 function mouseDownHandle(e){
@@ -153,8 +163,14 @@ function keyActionHandle(key){
 }
 
 function langToggle(){
-    if(Key.lang == 'en') Key.lang = 'ru';
-    else Key.lang = 'en';
+    if(Key.lang == 'en') {
+        Key.lang = 'ru';
+        localStorage.setItem('lang', Key.lang);
+    }
+    else {
+        Key.lang = 'en';
+        localStorage.setItem('lang', Key.lang);
+    }
 }
 
 function keyUpAction(key){
