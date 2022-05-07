@@ -2,6 +2,8 @@ import {Key} from "./classes/key.js";
 
 let keysHtml = [];
 
+let keysActive = new Set();
+
 
 let container = document.createElement('div');
 container.classList.add('container');
@@ -45,24 +47,35 @@ document.addEventListener('mouseup', mouseUpHandle);
 
 function keyDownHandle(e){
     e.preventDefault();
+    keysActive.add(e.code);
+
     let key = Key.getKeyByCode(e.code);
     if(key && key.code != 'CapsLock') {
         addActive(key);
     }
     keyActionHandle(key);
+
+    console.log(Key.caps);
 }
 
 function keyUpHandle(e){
+    keysActive.delete(e.code);
+
     let key = Key.getKeyByCode(e.code);
 
     if(key && key.code != 'CapsLock') {
         setTimeout(removeActive, 200, key);
     }
+
+    keyUpAction(key);
+
     e.preventDefault();
 }
 
 function mouseDownHandle(e){
     let code = e.target.dataset.code;
+    keysActive.add(code);
+
     if(code){
         let key = Key.getKeyByCode(code);
         if(key && key.code != 'CapsLock') {
@@ -74,6 +87,7 @@ function mouseDownHandle(e){
 
 function mouseUpHandle(e){
     let code = e.target.dataset.code;
+    keysActive.delete(code);
     if(code){
         let key = Key.getKeyByCode(code);
         if(key && key.code != 'CapsLock') {
@@ -81,6 +95,16 @@ function mouseUpHandle(e){
         }
         textarea.focus();
     }
+}
+
+function keyboardCapsChange(){
+    keysHtml.forEach((el)=>{
+        let key = Key.getKeyByCode(el.dataset.code);
+        //console.log(key.isCommand);
+        if(!key.isCommand() && key.code !== 'Enter' && key.code !== 'Tab'){
+            el.innerText = key.getValue();
+        }
+    });
 }
 
 function keyActionHandle(key){
@@ -96,6 +120,12 @@ function keyActionHandle(key){
                 capsToggle();
                 if(Key.caps) addActive(key);
                 else removeActive(key);
+                keyboardCapsChange();
+                break;
+            case 'ShiftRight':
+            case 'ShiftLeft':
+                shiftPress();
+                keyboardCapsChange();
                 break;
         }
     }
@@ -103,6 +133,24 @@ function keyActionHandle(key){
         console.log('key');
         insertKey(key);
     }
+}
+
+function keyUpAction(key){
+    if(!key) return;
+    switch(key.code){
+        case 'ShiftRight':
+        case 'ShiftLeft':
+            shiftRelease();
+            keyboardCapsChange();
+            break;
+    }
+}
+
+function shiftPress(){
+    Key.shift +=1;
+}
+function shiftRelease(){
+    Key.shift -=1;
 }
 
 function capsToggle(){

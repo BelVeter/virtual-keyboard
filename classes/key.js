@@ -1,77 +1,78 @@
 export class Key{
     static keysArray=[
-        ['Backquote', '`'], 
-        ['Digit1', '1'], 
-        ['Digit2', '2'], 
-        ['Digit3', '3'], 
-        ['Digit4', '4'], 
-        ['Digit5', '5'], 
-        ['Digit6', '6'], 
-        ['Digit7', '7'], 
-        ['Digit8', '8'], 
-        ['Digit9', '9'], 
-        ['Digit0', '0'], 
-        ['Minus', '-'],
-        ['Equal', '='],  
-        ['Backspace', 'Backspace'], 
+        ['Backquote', '`', '~'], 
+        ['Digit1', '1', '!'], 
+        ['Digit2', '2', '@'], 
+        ['Digit3', '3', '#',], 
+        ['Digit4', '4', '$'], 
+        ['Digit5', '5', '%'], 
+        ['Digit6', '6', '^'], 
+        ['Digit7', '7', '&'], 
+        ['Digit8', '8', '*'], 
+        ['Digit9', '9', '('], 
+        ['Digit0', '0', ')'], 
+        ['Minus', '-', '_'],
+        ['Equal', '=', '+'],  
+        ['Backspace', 'Backspace', 'Backspace'], 
 
-        ['Tab', 'Tab'], 
-        ['KeyQ', 'q'], 
-        ['KeyW', 'w'], 
-        ['KeyE', 'e'], 
-        ['KeyR', 'r'], 
-        ['KeyT', 't'], 
-        ['KeyY', 'y'], 
-        ['KeyU', 'u'], 
-        ['KeyI', 'i'], 
-        ['KeyO', 'o'], 
-        ['KeyP', 'p'],
-        ['BracketLeft', '['], 
-        ['BracketRight', ']'],
-        ['Backslash', '\\'], 
+        ['Tab', 'Tab', 'Tab'], 
+        ['KeyQ', 'q', 'Q'], 
+        ['KeyW', 'w', 'W'], 
+        ['KeyE', 'e', 'E'], 
+        ['KeyR', 'r', 'R'], 
+        ['KeyT', 't', 'T'], 
+        ['KeyY', 'y', 'Y'], 
+        ['KeyU', 'u', 'U'], 
+        ['KeyI', 'i', 'I'], 
+        ['KeyO', 'o', 'O'], 
+        ['KeyP', 'p', 'P'],
+        ['BracketLeft', '[', '{'], 
+        ['BracketRight', ']', '}'],
+        ['Backslash', '\\', '|'], 
 
-        ['CapsLock', 'Caps Lock'], 
-        ['KeyA', 'a'], 
-        ['KeyS', 's'], 
-        ['KeyD', 'd'], 
-        ['KeyF', 'f'], 
-        ['KeyG', 'g'], 
-        ['KeyH', 'h'], 
-        ['KeyJ', 'j'], 
-        ['KeyK', 'k'], 
-        ['KeyL', 'l'],
-        ['Semicolon', ';'],
-        ['Quote', '\''],  
-        ['Enter', 'Enter'], 
+        ['CapsLock', 'Caps Lock', 'Caps Lock'], 
+        ['KeyA', 'a', 'A'], 
+        ['KeyS', 's', 'S'], 
+        ['KeyD', 'd', 'D'], 
+        ['KeyF', 'f', 'F'], 
+        ['KeyG', 'g', 'G'], 
+        ['KeyH', 'h', 'H'], 
+        ['KeyJ', 'j', 'J'], 
+        ['KeyK', 'k', 'K'], 
+        ['KeyL', 'l', 'L'],
+        ['Semicolon', ';', ':'],
+        ['Quote', '\'', '"'],  
+        ['Enter', 'Enter', 'Enter'], 
         
-        ['ShiftLeft', 'Shift'], 
-        ['KeyZ', 'z'], 
-        ['KeyX', 'x'], 
-        ['KeyC', 'c'], 
-        ['KeyV', 'v'], 
-        ['KeyB', 'b'], 
-        ['KeyN', 'n'], 
-        ['KeyM', 'm'],
-        ['Comma', ','], 
-        ['Period', '.'], 
-        ['Slash', '/'], 
-        ['ArrowUp', '▲'], 
-        ['ShiftRight', 'Shift'], 
+        ['ShiftLeft', 'Shift', 'Shift'], 
+        ['KeyZ', 'z', 'Z'], 
+        ['KeyX', 'x', 'X'], 
+        ['KeyC', 'c', 'C'], 
+        ['KeyV', 'v', 'V'], 
+        ['KeyB', 'b', 'B'], 
+        ['KeyN', 'n', 'N'], 
+        ['KeyM', 'm', 'M'],
+        ['Comma', ',', '<'], 
+        ['Period', '.', '>'], 
+        ['Slash', '/', '?'], 
+        ['ArrowUp', '▲', '▲'], 
+        ['ShiftRight', 'Shift', 'Shift'], 
         
-        ['ControlLeft', 'Ctrl'], 
-        ['AltLeft', 'Option'], 
-        ['MetaLeft', 'Command'], 
-        ['Space', 'Space'], 
-        ['MetaRight', 'Command'], 
-        ['AltRight', 'Option'], 
-        ['ArrowLeft', '◄'], 
-        ['ArrowDown', '▼'], 
-        ['ArrowRight', '►'],        
+        ['ControlLeft', 'Ctrl', 'Ctrl'], 
+        ['AltLeft', 'Option', 'Option'], 
+        ['MetaLeft', 'Command', 'Command'], 
+        ['Space', 'Space', 'Space'], 
+        ['MetaRight', 'Command', 'Command'], 
+        ['AltRight', 'Option', 'Option'], 
+        ['ArrowLeft', '◄', '◄'], 
+        ['ArrowDown', '▼', '▼'], 
+        ['ArrowRight', '►', '►'],        
     ]
 
     static commandKeys = ['Backspace', 'CapsLock', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
 
     static caps = false;
+    static shift = 0;
 
     static getKeyboardLineKeys(line=1){
         let result =[];
@@ -123,15 +124,19 @@ export class Key{
     }
 
     getValue() {
+        let value='';
         if (this.value=='Tab') return '\t';
         if (this.value=='Enter') return '\n';
         if (this.value=='Space') return ' ';
         
-        if(Key.caps) {
-            return this.value.toUpperCase();
+        if(Key.shift) value = this.shiftValue;
+        else value = this.value;
+
+        if((Key.caps && !Key.shift) || (!Key.caps && Key.shift)) {
+            return value.toUpperCase();
         }
         else{
-            return this.value.toUpperCase();
+            return value.toLowerCase();
         }
         
     }
@@ -143,5 +148,6 @@ export class Key{
     constructor(keyArr){
         this.code=keyArr[0];
         this.value=keyArr[1];
+        this.shiftValue=keyArr[2];
     }
 }
