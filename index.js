@@ -48,10 +48,7 @@ function keyDownHandle(e){
     e.preventDefault();
     let key = Key.getKeyByCode(e.code);
     
-    if(key) {
-        insertKey(key);
-        addActive(key);
-    }
+    keyActionHandle(key);
 }
 
 function keyUpHandle(e){
@@ -69,8 +66,7 @@ function mouseDownHandle(e){
     let code = e.target.dataset.code;
     if(code){
         let key = Key.getKeyByCode(code);
-        insertKey(key);
-        addActive(key);
+        keyActionHandle(key);
     }
 }
 
@@ -82,11 +78,37 @@ function mouseUpHandle(e){
     }
 }
 
+function keyActionHandle(key){
+    if(key) {
+        insertKey(key);
+        addActive(key);
+    }
+}
+
 function insertKey(key){
     if(key.isCommand()) return;
-        
-    let newString=String(textarea.value+key.getValue());
+    let cursorPosition = textarea.selectionStart;
+    let str = textarea.value;
+    let firstTextPart=str.substring(0,cursorPosition);
+    let secondTextPart=str.substring(cursorPosition);
+    let newString=firstTextPart+key.getValue()+secondTextPart;
     textarea.value = newString;
+    textarea.selectionStart=cursorPosition+1
+    textarea.selectionEnd=cursorPosition+1;
+}
+
+function deleteChar(){
+    let cursorPosition = textarea.selectionStart;
+    
+    if(cursorPosition==0) return;
+
+    let str = textarea.value;
+    let firstTextPart=str.substring(0,cursorPosition-1);
+    let secondTextPart=str.substring(cursorPosition);
+    let newString=firstTextPart+secondTextPart;
+    textarea.value = newString;
+    textarea.selectionStart=cursorPosition+1
+    textarea.selectionEnd=cursorPosition+1;
 }
 
 function addActive(key){
