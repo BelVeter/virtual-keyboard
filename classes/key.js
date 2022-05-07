@@ -71,6 +71,8 @@ export class Key{
 
     static commandKeys = ['Backspace', 'CapsLock', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
 
+    static caps = false;
+
     static getKeyboardLineKeys(line=1){
         let result =[];
         let iFinish=0;
@@ -115,11 +117,23 @@ export class Key{
         else return false;
     }
 
+    static capsToggle(){
+        if(Key.caps) Key.caps = false;
+        else Key.caps = true;
+    }
+
     getValue() {
         if (this.value=='Tab') return '\t';
         if (this.value=='Enter') return '\n';
         if (this.value=='Space') return ' ';
-        else return this.value;
+        
+        if(Key.caps) {
+            return this.value.toUpperCase();
+        }
+        else{
+            return this.value.toUpperCase();
+        }
+        
     }
 
     isCommand(){
